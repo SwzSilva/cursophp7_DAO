@@ -51,6 +51,44 @@ class Usuario{
 		}
 	}
 
+	//AULA LIST - SECÇÃO 13, AULA 64
+	public static function getList(){
+		$sql = new Sql();
+		return $sql->select("SELECT * FROM tb_usuarios ORDER BY deslogin;");
+	}
+
+	public static function search($login){
+		$sql = new Sql();
+		return $sql->select("SELECT * FROM tb_usuarios WHERE deslogin LIKE :SEARCH ORDER BY deslogin",array(
+			':SEARCH'=>"%".$login."%"
+			));
+	}
+
+	//POSSUI A MESMA ESTRUTURA DO LOADBYID
+	
+	public function login($login, $password){
+				$sql = new Sql();
+		$result = $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :LOGIN AND dessenha = :SENHA", array(
+				":LOGIN"=>$login,
+				":SENHA"=>$password
+			));
+
+		if (isset($result[0])){
+
+			$row = $result[0];
+			$this->setIdusuario($row['idusuario']);
+			$this->setDeslogin($row['deslogin']);
+			$this->setDessenha($row['dessenha']);
+			$this->setDtcadastro( new DateTime($row['dtcadastro']));
+
+		}else{
+			throw new Exception("Login e/ou senha invalido(a)!");
+			
+		}
+	}
+
+	//ÁTÉ AQUI: AULA LIST - SECÇÃO 13, AULA 64
+
 	public function __toString(){
 
 		return json_encode(array(
@@ -59,6 +97,12 @@ class Usuario{
 		"dessenha"=>$this->getDessenha(),
 		"dtcadastro"=>$this->getDtcadastro()->format("d/m/Y H:i:s")
 		));
+
+		/*PROBLEMAS COM O 'FORMAT' DEVIDO ERRO DE SINTAXE NO CONTEÚDO. 
+
+		DEVIDO ERRO DE ATRIBUIÇÃO NO WHERE, O RESULTADO QUE O SELECT TROUXE ERA NULL; LOGO, O METODO FORMAT NÃO CONSEGUE TRABALHAR COM UM RESULTADO NULL.*/
 	}
+
+
 }
 ?>
