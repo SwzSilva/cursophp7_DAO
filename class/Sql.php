@@ -14,9 +14,9 @@
 		}
 		//Prepara a execução dos comandos SQL (+ de 1)
 		private function setParams($statment, $parameters=array()){
-			foreach($parameters as $key => $values){
+			foreach($parameters as $key => $value){
 
-				$statment->bindParam($key,$value);
+				$this->setParam($statment,$key,$value);
 
 			}
 		}
