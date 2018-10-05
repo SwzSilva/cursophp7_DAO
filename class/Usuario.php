@@ -42,11 +42,7 @@ class Usuario{
 
 		if (isset($result[0])){
 
-			$row = $result[0];
-			$this->setIdusuario($row['idusuario']);
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro( new DateTime($row['dtcadastro']));
+			$this->setData($result[0]);
 
 		}
 	}
@@ -75,11 +71,7 @@ class Usuario{
 
 		if (isset($result[0])){
 
-			$row = $result[0];
-			$this->setIdusuario($row['idusuario']);
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro( new DateTime($row['dtcadastro']));
+			$this->setData($result[0]);
 
 		}else{
 			throw new Exception("Login e/ou senha invalido(a)!");
@@ -87,7 +79,57 @@ class Usuario{
 		}
 	}
 
-	//ÁTÉ AQUI: AULA LIST - SECÇÃO 13, AULA 64
+	//ATÉ AQUI: AULA LIST - SECÇÃO 13, AULA 64
+
+
+	//AULA INSERT - DAO 
+
+	Public function setData($data){
+
+		$this->setIdusuario($data['idusuario']);
+		$this->setDeslogin($data['deslogin']);
+		$this->setDessenha($data['dessenha']);
+		$this->setDtcadastro( new DateTime($data['dtcadastro']));
+
+	}
+
+	public function insert(){
+
+		$sql = new Sql();
+		//SQL SERVER UTUILIA: EXECUTE E NÃO CALL
+		$result = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)",array(
+			':LOGIN'=>$this->getDeslogin(),
+			':PASSWORD'=>$this->getDessenha()
+		));
+
+		if (count($result)>0){
+
+			$this->setData($result[0]);
+
+		}
+
+	}
+
+	public function update($login, $senha){
+
+		$this->setDeslogin($login);
+		$this->setDessenha($senha);
+
+		$sql = new Sql();
+
+		$sql->query("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :SENHA WHERE idusuario = 	:ID", array(
+			":LOGIN"=>$this->getDeslogin(),
+			":SENHA"=>$this->getDessenha(),
+			":ID"=>$this->getIdusuario()
+		));
+
+
+	}
+	//ATRIBUÍDO NULL PARA AS VARIÁVEIS POIS NAS UTILIZAÇÕES SEM PARÂMENTROS NÃO VAI INFLUENCIAR
+	public function __construct($login="", $password=""){
+		$this->setDeslogin($login);
+		$this->setDessenha($password);
+	}
 
 	public function __toString(){
 

@@ -24,9 +24,36 @@ echo json_encode($usuarios);*/
 //$search = Usuario::search("au");
 //echo json_encode($search);
 
-//CARREGA UM USUÁRIO USANDO LOGIN E SENHA
+/*/CARREGA UM USUÁRIO USANDO LOGIN E SENHA
 $user = new Usuario();
 $user->login("root","root");
+echo $user;*/
+
+/*
+AULA INSERT SEM O CONTRUCT
+
+$aluno = new Usuario();
+$aluno->setDeslogin("aluno");
+$aluno->setDessenha("@luN0");
+
+$aluno->insert();
+
+uUSANDO CONSTRUTOR
+
+echo $aluno;
+
+$aluno = new Usuario("Fabio Cunha","@lun0s");
+
+$aluno->insert();
+
+echo $aluno;*/
+
+$user = new Usuario();
+
+$user->loadById(7);
+
+$user->update("professor","&#%@*@!");
+
 echo $user;
 
 ?>
