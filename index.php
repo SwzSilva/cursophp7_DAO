@@ -47,13 +47,21 @@ $aluno = new Usuario("Fabio Cunha","@lun0s");
 $aluno->insert();
 
 echo $aluno;*/
+/*
 
+	----- UPDATE -----
 $user = new Usuario();
 
 $user->loadById(7);
 
 $user->update("professor","&#%@*@!");
 
+echo $user;
+*/
+$user = new Usuario();
+
+$user->loadById(7);
+$user->delete();
 echo $user;
 
 ?>
